@@ -1,6 +1,6 @@
 """Installs the package"""
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="akshara",
@@ -12,9 +12,7 @@ setup(
     long_description_content_type="text/markdown",
     long_description="A project to help spelling in Sanskrit",
     license="GNU GENERAL PUBLIC LICENSE",
-    packages=find_packages(
-        exclude=["test"]
-    ),
+    packages=find_packages(exclude=["test"]),
     install_requires=[],
     classifiers=[
         "Programming Language :: Python :: 3",

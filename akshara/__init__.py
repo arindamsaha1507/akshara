@@ -1,3 +1,2 @@
 """Sample"""
-from akshara import varna
-from akshara import varnakaarya
+from akshara import varna, varnakaarya

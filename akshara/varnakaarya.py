@@ -1,6 +1,7 @@
 """Handles all operations on varnas"""
 
 import sys
+
 import akshara.varna as vn
 
 
