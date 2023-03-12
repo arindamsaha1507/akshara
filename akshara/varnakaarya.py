@@ -216,8 +216,4 @@ def expand_pratyahaara(pratyaahaara: str) -> list:
     if "उ" in section:
         section.append("ऊ")
 
-    return slice
-
-
-if __name__ == "__main__":
-    print(get_shabda(get_vinyaasa("रामः हरिः शम्भुः")))
+    return list(set(section))
