@@ -27,7 +27,7 @@ def count_svaras(vinyaasa: list | str) -> int:
         vinyaasa (list | str): String or vinyaasa of a string
 
     Returns:
-        int: Number of svaras in the vinyaasa
+        int: Number of svaras
     """
 
     return sum(1 for x in get_vinyaasa(vinyaasa) if x in vn.svara)
@@ -40,23 +40,23 @@ def count_vyanjanas(vinyaasa: list | str) -> int:
         vinyaasa (list | str): String or vinyaasa of a string
 
     Returns:
-        int: Number of svaras in the vinyaasa
+        int: Number of vyanjanas
     """
 
     return sum(1 for x in get_vinyaasa(vinyaasa) if x in vn.vyanjana)
 
 
-def count_vaakyas(vinyaasa: list) -> int:
-    """Counts the number of vyanjanas
+def count_vaakyas(vinyaasa: list | str) -> int:
+    """Counts the number of vaakyas
 
     Args:
-        vinyaasa (list): Vinyaasa of a string
+        vinyaasa (list | str): String or vinyaasa of a string
 
     Returns:
-        int: Number of svaras in the vinyaasa
+        int: Number of vaakyas
     """
 
-    return sum(1 for x in vinyaasa if x in vn.vyanjana)
+    return sum(1 for x in vinyaasa if x in ["।", "॥"])
 
 
 def break_paada(vinyaasa: list) -> list:
