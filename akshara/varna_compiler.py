@@ -5,8 +5,6 @@ import yaml
 with open("varna.yml", "r", encoding="utf-8") as file:
     dd = yaml.safe_load(file)
 
-print(len(dd.keys()))
-
 with open("moola.csv", "w", encoding="utf-8") as file:
     for v in dd.keys():
         if "आभ्यन्तरप्रयत्नः" not in dd[v].keys():
@@ -99,3 +97,18 @@ with open("vistrita.csv", "w", encoding="utf-8") as file:
             line += "\n"
 
             file.write(line)
+
+with open("vistrita.csv", "r", encoding="utf-8") as file:
+    lines = file.readlines()
+
+
+with open("laukika.csv", "w", encoding="utf-8") as file:
+    for line in lines:
+        if "॒" not in line and "॑" not in line and "यमः" not in line:
+            file.write(line)
+
+with open("latest.csv", "w", encoding="utf-8") as file:
+
+    for line in lines:
+        if "॒" not in line and "॑" not in line and "यमः" not in line:
+            file.write(line.replace("संवृतः", "विवृतः"))
