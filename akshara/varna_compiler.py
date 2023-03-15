@@ -143,6 +143,6 @@ def create_varna_table(
             if "॒" not in line and "॑" not in line and "यमः" not in line:
                 file.write(line.replace("संवृतः", "विवृतः"))
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     create_varna_table()

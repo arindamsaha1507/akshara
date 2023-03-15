@@ -3,6 +3,7 @@
 import os
 import yaml
 
+
 def read_table(filename="latest.csv", directory="resources"):
     """Read varna table
 
@@ -57,17 +58,17 @@ anunaasika_svara = list(x for x in all_svara if "ँ" in x)
 niranunaasika_svara = list(x for x in all_svara if "ँ" not in x)
 svara = list(x for x in niranunaasika_svara if "३" not in x)
 
-directory = 'resources'
-filename = 'vividha.yml'
+directory = "resources"
+filename = "vividha.yml"
 path = f"{str(os.path.dirname(__file__))}/{directory}/{filename}"
-with open(path, 'r', encoding='utf-8') as symbol_file:
+with open(path, "r", encoding="utf-8") as symbol_file:
     symbols = yaml.safe_load(symbol_file)
 
-maatraa = symbols['maatraa']
+maatraa = symbols["maatraa"]
 
 maatraa_to_svara = dict(zip(maatraa, svara[1:]))
 svara_to_maatraa = dict(zip(svara[1:], maatraa))
 
-sankhyaa = symbols['sankhyaa']
+sankhyaa = symbols["sankhyaa"]
 
-maaheshwara_sutra = symbols['maaheshwara_sutra']
+maaheshwara_sutra = symbols["maaheshwara_sutra"]
