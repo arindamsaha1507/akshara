@@ -19,4 +19,5 @@ setup(
         "License :: OSI Approved :: GNU General Public License (GPL)",
         "Operating System :: OS Independent",
     ],
+    include_package_data=True,
 )
