@@ -13,7 +13,7 @@ setup(
     long_description="A project to help spelling in Sanskrit",
     license="GNU GENERAL PUBLIC LICENSE",
     packages=find_packages(exclude=["test"]),
-    install_requires=[],
+    install_requires=["pyyaml"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License (GPL)",
