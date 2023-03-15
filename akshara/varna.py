@@ -1,159 +1,73 @@
 """Defines basic alphabet for sanskrit"""
 
-svara = ["अ", "आ", "इ", "ई", "उ", "ऊ", "ऋ", " ॠ", "ऌ", "ए", "ऐ", "ओ", "औ"]
-maatraa = ["ा", "ि", "ी", "ु", "ू", "ृ", "ॄ", "ॢ", "े", "ै", "ो", "ौ"]
+import os
+import yaml
 
-anunaasika_svara = [
-    "अँ",
-    "आँ",
-    "इँ",
-    "ईँ",
-    "उँ",
-    "ऊँ",
-    "ऋँ",
-    " ॠँ",
-    "ऌँ",
-    "एँ",
-    "ऐँ",
-    "ओँ",
-    "औँ",
-]
+def read_table(filename="latest.csv", directory="resources"):
+    """Read varna table
+
+    Args:
+        filename (str, optional): Directory of resource table. Defaults to 'latest.csv'.
+        directory (str, optional): Resource table filename. Defaults to 'resources'.
+
+    Returns:
+        list: List of lines read
+    """
+
+    path = f"{str(os.path.dirname(__file__))}/{directory}/{filename}"
+
+    with open(path, "r", encoding="utf-8") as file:
+        lines = file.readlines()
+
+    return list(lines)
+
+
+def get_svara(raw_lines: list) -> list:
+    """Returns list of svaras
+
+    Args:
+        raw_lines (list): List of lines read from the resources
+
+    Returns:
+        list: List of svaras
+    """
+
+    return list(x.split(",")[0] for x in raw_lines if x.split(",")[1] == "स्वरः")
+
+
+def get_vyanjana(raw_lines: list) -> list:
+    """Returns list of vyanjanas
+
+    Args:
+        raw_lines (list): List of lines read from the resources
+
+    Returns:
+        list: List of vyanjanas
+    """
+
+    return list(x.split(",")[0] for x in raw_lines if x.split(",")[1] == "व्यञ्जनम्")
+
+
+resource_lines = read_table()
+all_svara = get_svara(resource_lines)
+vyanjana = get_vyanjana(resource_lines)
+vyanjana_with_akaara = list(x[0] for x in vyanjana)
+avasaana = [" ", "।", "॥", "-"]
+anunaasika_svara = list(x for x in all_svara if "ँ" in x)
+niranunaasika_svara = list(x for x in all_svara if "ँ" not in x)
+svara = list(x for x in niranunaasika_svara if "३" not in x)
+
+directory = 'resources'
+filename = 'vividha.yml'
+path = f"{str(os.path.dirname(__file__))}/{directory}/{filename}"
+with open(path, 'r', encoding='utf-8') as symbol_file:
+    symbols = yaml.safe_load(symbol_file)
+
+maatraa = symbols['maatraa']
 
 maatraa_to_svara = dict(zip(maatraa, svara[1:]))
 svara_to_maatraa = dict(zip(svara[1:], maatraa))
 
-vyanjana = [
-    "क्",
-    "ख्",
-    "ग्",
-    "घ्",
-    "ङ्",
-    "च्",
-    "छ्",
-    "ज्",
-    "झ्",
-    "ञ्",
-    "ट्",
-    "ठ्",
-    "ड्",
-    "ढ्",
-    "ण्",
-    "त्",
-    "थ्",
-    "द्",
-    "ध्",
-    "न्",
-    "प्",
-    "फ्",
-    "ब्",
-    "भ्",
-    "म्",
-    "य्",
-    "र्",
-    "ल्",
-    "व्",
-    "श्",
-    "ष्",
-    "स्",
-    "ह्",
-]
+sankhyaa = symbols['sankhyaa']
 
-vyanjana_with_akaara = [
-    "क",
-    "ख",
-    "ग",
-    "घ",
-    "ङ",
-    "च",
-    "छ",
-    "ज",
-    "झ",
-    "ञ",
-    "ट",
-    "ठ",
-    "ड",
-    "ढ",
-    "ण",
-    "त",
-    "थ",
-    "द",
-    "ध",
-    "न",
-    "प",
-    "फ",
-    "ब",
-    "भ",
-    "म",
-    "य",
-    "र",
-    "ल",
-    "व",
-    "श",
-    "ष",
-    "स",
-    "ह",
-]
-
-avasaana = [" ", "।", "॥", "-"]
-
-maaheshwar_suutra = [
-    "अ",
-    "इ",
-    "उ",
-    "ण्",
-    "ऋ",
-    "ऌ",
-    "क्",
-    "ए",
-    "ओ",
-    "ङ्",
-    "ऐ",
-    "औ",
-    "च्",
-    "ह",
-    "य",
-    "व",
-    "र",
-    "ट्",
-    "ल",
-    "ण्",
-    "ञ",
-    "म",
-    "ङ",
-    "ण",
-    "न",
-    "म्",
-    "झ",
-    "भ",
-    "ञ्",
-    "घ",
-    "ढ",
-    "ध",
-    "ष्",
-    "ज",
-    "ब",
-    "ग",
-    "ड",
-    "द",
-    "श्",
-    "ख",
-    "फ",
-    "छ",
-    "ठ",
-    "थ",
-    "च",
-    "ट",
-    "त",
-    "व्",
-    "क",
-    "प",
-    "य्",
-    "श",
-    "ष",
-    "स",
-    "र्",
-    "ह",
-    "ल्",
-]
-
-sankhyaa = ["०", "१", "२", "३", "४", "५", "६", "७", "८", "९"]
+maaheshwara_sutra = symbols['maaheshwara_sutra']

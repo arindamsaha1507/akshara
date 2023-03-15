@@ -225,10 +225,10 @@ def expand_pratyahaara(pratyaahaara: str) -> list:
     start = pratyaahaara[0]
     stop = pratyaahaara[1] + pratyaahaara[2]
 
-    i = vn.maaheshwar_suutra.index(start)
-    j = vn.maaheshwar_suutra.index(stop)
+    i = vn.maaheshwara_sutra.index(start)
+    j = vn.maaheshwara_sutra.index(stop)
 
-    section = vn.maaheshwar_suutra[i:j]
+    section = vn.maaheshwara_sutra[i:j]
 
     it_letter = [x for x in section if x in vn.vyanjana]
     for letter in it_letter:
