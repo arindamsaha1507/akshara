@@ -74,16 +74,16 @@ def create_varna_table(
                         dd[v]["बाह्यप्रयत्नः"] = baahyaprayatna
 
                         if baahyaprayatna == "अनुदात्तः":
-                            CHINHA = "॒"
+                            chinha = "॒"
                         elif baahyaprayatna == "स्वरितः":
-                            CHINHA = "॑"
+                            chinha = "॑"
                         else:
-                            CHINHA = ""
+                            chinha = ""
 
                         line = (
-                            v + naasika + CHINHA
+                            v + naasika + chinha
                             if len(v) == 1
-                            else v[0] + naasika + CHINHA + v[1]
+                            else v[0] + naasika + chinha + v[1]
                         )
                         line += f",{dd[v]['भेदः']},{dd[v]['उच्चारणस्थानम्']}"
                         line += f",{dd[v]['आभ्यन्तरप्रयत्नः']},{dd[v]['बाह्यप्रयत्नः']}"
