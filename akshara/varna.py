@@ -4,12 +4,12 @@ import os
 import yaml
 
 
-def read_table(filename="latest.csv", directory="resources"):
+def read_table(filename="latest.csv", directory="resources") -> list:
     """Read varna table
 
     Args:
-        filename (str, optional): Directory of resource table. Defaults to 'latest.csv'.
-        directory (str, optional): Resource table filename. Defaults to 'resources'.
+        filename (str, optional): Filename of resource table. Defaults to 'latest.csv'.
+        directory (str, optional): Resource directory. Defaults to 'resources'.
 
     Returns:
         list: List of lines read
@@ -21,6 +21,24 @@ def read_table(filename="latest.csv", directory="resources"):
         lines = file.readlines()
 
     return list(lines)
+
+
+def read_symbols(filename="vividha.yml", directory="resources") -> dict:
+    """Read symbols file
+
+    Args:
+        filename (str, optional): Symbols filename. Defaults to 'vividha.yml'.
+        directory (str, optional): Resource directory. Defaults to 'resources'.
+
+    Returns:
+        dict: Dict of yaml file read
+    """
+
+    path = f"{str(os.path.dirname(__file__))}/{directory}/{filename}"
+    with open(path, "r", encoding="utf-8") as symbol_file:
+        symbols = yaml.safe_load(symbol_file)
+
+        return symbols
 
 
 def get_svara(raw_lines: list) -> list:
@@ -58,17 +76,13 @@ anunaasika_svara = list(x for x in all_svara if "ँ" in x)
 niranunaasika_svara = list(x for x in all_svara if "ँ" not in x)
 svara = list(x for x in niranunaasika_svara if "३" not in x)
 
-directory = "resources"
-filename = "vividha.yml"
-path = f"{str(os.path.dirname(__file__))}/{directory}/{filename}"
-with open(path, "r", encoding="utf-8") as symbol_file:
-    symbols = yaml.safe_load(symbol_file)
+other_symbols = read_symbols()
 
-maatraa = symbols["maatraa"]
+maatraa = other_symbols["maatraa"]
 
 maatraa_to_svara = dict(zip(maatraa, svara[1:]))
 svara_to_maatraa = dict(zip(svara[1:], maatraa))
 
-sankhyaa = symbols["sankhyaa"]
+sankhyaa = other_symbols["sankhyaa"]
 
-maaheshwara_sutra = symbols["maaheshwara_sutra"]
+maaheshwara_sutra = other_symbols["maaheshwara_sutra"]
