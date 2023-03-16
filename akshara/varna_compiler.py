@@ -3,27 +3,205 @@ import os
 import yaml
 
 
+def write_csv(parts: list, filename: str):
+    """Writes properties of a single varna to a csv file
+
+    Args:
+        parts (list): List of components to be written
+        filename (str): Filename of the output file
+    """
+
+    with open(filename, "a", encoding="utf-8") as file:
+        for index, part in enumerate(parts):
+            file.write(part)
+            if index == len(parts) - 1:
+                file.write("\n")
+            else:
+                file.write(",")
+
+
+def create_moola(data_dict: dict, moola_fname: str):
+    """Creates moola varna table
+
+    Args:
+        data_dict (dict): Data dictionary containing all information
+        moola_fname (str): Output filename
+    """
+
+    os.remove(moola_fname)
+
+    for data_key in data_dict.keys():
+        if "आभ्यन्तरप्रयत्नः" not in data_dict[data_key].keys():
+            data_dict[data_key]["आभ्यन्तरप्रयत्नः"] = "-"
+
+        if "बाह्यप्रयत्नः" not in data_dict[data_key].keys():
+            data_dict[data_key]["बाह्यप्रयत्नः"] = "-"
+
+        if "कालः" not in data_dict[data_key].keys():
+            data_dict[data_key]["कालः"] = "-"
+
+        if isinstance(data_dict[data_key]["उच्चारणस्थानम्"], list):
+            data_dict[data_key]["उच्चारणस्थानम्"] = "+".join(
+                data_dict[data_key]["उच्चारणस्थानम्"]
+            )
+
+        if isinstance(data_dict[data_key]["बाह्यप्रयत्नः"], list):
+            data_dict[data_key]["बाह्यप्रयत्नः"] = "+".join(
+                data_dict[data_key]["बाह्यप्रयत्नः"]
+            )
+
+        parts = [
+            data_key,
+            data_dict[data_key]["भेदः"],
+            data_dict[data_key]["उच्चारणस्थानम्"],
+            data_dict[data_key]["आभ्यन्तरप्रयत्नः"],
+            data_dict[data_key]["बाह्यप्रयत्नः"],
+            data_dict[data_key]["कालः"],
+        ]
+
+        write_csv(parts, moola_fname)
+
+
+def handle_anunaasika(data: dict, naasika: str) -> dict:
+    """Modifies data according to anunaasika
+
+    Args:
+        data (dict): Original data
+
+    Returns:
+        dict: Modified data
+    """
+
+    if naasika == "ँ":
+        data["नासिकभेदः"] = "अनुनासिकः"
+        data["उच्चारणस्थानम्"] = data["उच्चारणस्थानम्"] + "+" + "नासिका"
+
+    return data
+
+
+def get_svara_chinha(svara_bheda: str) -> str:
+    """Returns svarachinha according to svarabheda
+
+    Args:
+        svara_bheda (str): Svarabheda
+
+    Returns:
+        str: Svarachinha
+    """
+
+    if svara_bheda == "अनुदात्तः":
+        chinha = "॒"
+    elif svara_bheda == "स्वरितः":
+        chinha = "॑"
+    else:
+        chinha = ""
+
+    return chinha
+
+
+def create_vistrita(data_dict, vistrita_fname):
+    """Creates vistrita varna table
+
+    Args:
+        data_dict (dict): Data dictionary containing all information
+        moola_fname (str): Output filename
+    """
+
+    os.remove(vistrita_fname)
+
+    for data_key in data_dict.keys():
+        data_dict[data_key]["नासिकभेदः"] = "निरनुनासिकः"
+
+        if data_dict[data_key]["भेदः"] == "स्वरः":
+            for naasika in ["", "ँ"]:
+                data_dict[data_key] = handle_anunaasika(data_dict[data_key], naasika)
+
+                for baahyaprayatna in ["उदात्तः", "अनुदात्तः", "स्वरितः"]:
+                    data_dict[data_key]["बाह्यप्रयत्नः"] = baahyaprayatna
+
+                    chinha = get_svara_chinha(baahyaprayatna)
+
+                    temp = (
+                        data_key + naasika + chinha
+                        if len(data_key) == 1
+                        else data_key[0] + naasika + chinha + data_key[1]
+                    )
+
+                    parts = [
+                        temp,
+                        data_dict[data_key]["भेदः"],
+                        data_dict[data_key]["उच्चारणस्थानम्"],
+                        data_dict[data_key]["आभ्यन्तरप्रयत्नः"],
+                        data_dict[data_key]["बाह्यप्रयत्नः"],
+                        data_dict[data_key]["कालः"],
+                        data_dict[data_key]["नासिकभेदः"],
+                    ]
+
+                    write_csv(parts, vistrita_fname)
+
+        elif data_key in ["य्", "ल्", "व्"]:
+            for naasika in ["", "ँ"]:
+                data_dict[data_key] = handle_anunaasika(data_dict[data_key], naasika)
+
+                temp = data_key + naasika
+
+                parts = [
+                    temp,
+                    data_dict[data_key]["भेदः"],
+                    data_dict[data_key]["उच्चारणस्थानम्"],
+                    data_dict[data_key]["आभ्यन्तरप्रयत्नः"],
+                    data_dict[data_key]["बाह्यप्रयत्नः"],
+                    data_dict[data_key]["कालः"],
+                    data_dict[data_key]["नासिकभेदः"],
+                ]
+
+                write_csv(parts, vistrita_fname)
+
+        else:
+            if "आभ्यन्तरप्रयत्नः" not in data_dict[data_key].keys():
+                data_dict[data_key]["आभ्यन्तरप्रयत्नः"] = "-"
+
+            if "बाह्यप्रयत्नः" not in data_dict[data_key].keys():
+                data_dict[data_key]["बाह्यप्रयत्नः"] = "-"
+
+            if "कालः" not in data_dict[data_key].keys():
+                data_dict[data_key]["कालः"] = "-"
+
+            if "+" in data_dict[data_key]["उच्चारणस्थानम्"]:
+                if "नासिका" in data_dict[data_key]["उच्चारणस्थानम्"]:
+                    data_dict[data_key]["नासिकभेदः"] = "अनुनासिकः"
+
+            parts = [
+                data_key,
+                data_dict[data_key]["भेदः"],
+                data_dict[data_key]["उच्चारणस्थानम्"],
+                data_dict[data_key]["आभ्यन्तरप्रयत्नः"],
+                data_dict[data_key]["बाह्यप्रयत्नः"],
+                data_dict[data_key]["कालः"],
+                data_dict[data_key]["नासिकभेदः"],
+            ]
+
+            write_csv(parts, vistrita_fname)
+
+
 def create_varna_table(
-    input_file="varna.yml",
-    moola="moola.csv",
-    laukika="laukika.csv",
-    vistrita="vistrita.csv",
-    latest="latest.csv",
-    directory="resources",
+    input_file="resources/varna.yml",
+    moola="resources/moola.csv",
+    laukika="resources/laukika.csv",
+    vistrita="resources/vistrita.csv",
+    latest="resources/latest.csv",
 ):
     """Creates varna tables
 
     Args:
-        input (str, optional): Input filename for varnas (yaml). Defaults to "varna.yml".
-        moola (str, optional): Output filename for moola. Defaults to "moola.csv".
-        laukika (str, optional): Output filname for laukika. Defaults to "laukika.csv".
-        vistrita (str, optional): Output filename for vistrita. Defaults to "vistrita.csv".
-        latest (str, optional): Output filename for latest. Defaults to "latest.csv".
-        directory (str, optional): Resource directory. Defaults to "resources".
+        input (str, optional): Input file for varnas (yaml). Defaults to "resources/varna.yml".
+        moola (str, optional): Output file for moola. Defaults to "resources/moola.csv".
+        laukika (str, optional): Output file for laukika. Defaults to "resources/laukika.csv".
+        vistrita (str, optional): Output file for vistrita. Defaults to "resources/vistrita.csv".
+        latest (str, optional): Output file for latest. Defaults to "resources/latest.csv".
     """
 
-    path = f"{str(os.path.dirname(__file__))}/{directory}"
-    print(os.path.dirname(__file__))
+    path = f"{str(os.path.dirname(__file__))}"
     input_fname = f"{path}/{input_file}"
     moola_fname = f"{path}/{moola}"
     laukika_fname = f"{path}/{laukika}"
@@ -31,104 +209,10 @@ def create_varna_table(
     latest_fname = f"{path}/{latest}"
 
     with open(input_fname, "r", encoding="utf-8") as file:
-        dd = yaml.safe_load(file)
+        data_dict = yaml.safe_load(file)
 
-    with open(moola_fname, "w", encoding="utf-8") as file:
-        for v in dd.keys():
-            if "आभ्यन्तरप्रयत्नः" not in dd[v].keys():
-                dd[v]["आभ्यन्तरप्रयत्नः"] = "-"
-
-            if "बाह्यप्रयत्नः" not in dd[v].keys():
-                dd[v]["बाह्यप्रयत्नः"] = "-"
-
-            if "कालः" not in dd[v].keys():
-                dd[v]["कालः"] = "-"
-
-            if isinstance(dd[v]["उच्चारणस्थानम्"], list):
-                dd[v]["उच्चारणस्थानम्"] = "+".join(dd[v]["उच्चारणस्थानम्"])
-
-            if isinstance(dd[v]["बाह्यप्रयत्नः"], list):
-                dd[v]["बाह्यप्रयत्नः"] = "+".join(dd[v]["बाह्यप्रयत्नः"])
-
-            line = v
-            line += f",{dd[v]['भेदः']},{dd[v]['उच्चारणस्थानम्']}"
-            line += f",{dd[v]['आभ्यन्तरप्रयत्नः']},{dd[v]['बाह्यप्रयत्नः']}"
-            line += f",{dd[v]['कालः']}"
-            line += "\n"
-
-            file.write(line)
-
-    with open(vistrita_fname, "w", encoding="utf-8") as file:
-        for v in dd.keys():
-            dd[v]["नासिकभेदः"] = "निरनुनासिकः"
-
-            if dd[v]["भेदः"] == "स्वरः":
-                for naasika in ["", "ँ"]:
-                    if naasika == "ँ":
-                        dd[v]["नासिकभेदः"] = "अनुनासिकः"
-                        dd[v]["उच्चारणस्थानम्"] = (
-                            dd[v]["उच्चारणस्थानम्"] + "+" + "नासिका"
-                        )
-
-                    for baahyaprayatna in ["उदात्तः", "अनुदात्तः", "स्वरितः"]:
-                        dd[v]["बाह्यप्रयत्नः"] = baahyaprayatna
-
-                        if baahyaprayatna == "अनुदात्तः":
-                            chinha = "॒"
-                        elif baahyaprayatna == "स्वरितः":
-                            chinha = "॑"
-                        else:
-                            chinha = ""
-
-                        line = (
-                            v + naasika + chinha
-                            if len(v) == 1
-                            else v[0] + naasika + chinha + v[1]
-                        )
-                        line += f",{dd[v]['भेदः']},{dd[v]['उच्चारणस्थानम्']}"
-                        line += f",{dd[v]['आभ्यन्तरप्रयत्नः']},{dd[v]['बाह्यप्रयत्नः']}"
-                        line += f",{dd[v]['कालः']},{dd[v]['नासिकभेदः']}"
-                        line += "\n"
-
-                        file.write(line)
-
-            elif v in ["य्", "ल्", "व्"]:
-                for naasika in ["", "ँ"]:
-                    if naasika == "ँ":
-                        dd[v]["नासिकभेदः"] = "अनुनासिकः"
-                        dd[v]["उच्चारणस्थानम्"] = (
-                            dd[v]["उच्चारणस्थानम्"] + "+" + "नासिका"
-                        )
-
-                    line = v + naasika
-                    line += f",{dd[v]['भेदः']},{dd[v]['उच्चारणस्थानम्']}"
-                    line += f",{dd[v]['आभ्यन्तरप्रयत्नः']},{dd[v]['बाह्यप्रयत्नः']}"
-                    line += f",{dd[v]['कालः']},{dd[v]['नासिकभेदः']}"
-                    line += "\n"
-
-                    file.write(line)
-
-            else:
-                if "आभ्यन्तरप्रयत्नः" not in dd[v].keys():
-                    dd[v]["आभ्यन्तरप्रयत्नः"] = "-"
-
-                if "बाह्यप्रयत्नः" not in dd[v].keys():
-                    dd[v]["बाह्यप्रयत्नः"] = "-"
-
-                if "कालः" not in dd[v].keys():
-                    dd[v]["कालः"] = "-"
-
-                if "+" in dd[v]["उच्चारणस्थानम्"]:
-                    if "नासिका" in dd[v]["उच्चारणस्थानम्"]:
-                        dd[v]["नासिकभेदः"] = "अनुनासिकः"
-
-                line = v
-                line += f",{dd[v]['भेदः']},{dd[v]['उच्चारणस्थानम्']}"
-                line += f",{dd[v]['आभ्यन्तरप्रयत्नः']},{dd[v]['बाह्यप्रयत्नः']}"
-                line += f",{dd[v]['कालः']},{dd[v]['नासिकभेदः']}"
-                line += "\n"
-
-                file.write(line)
+    create_moola(data_dict, moola_fname)
+    create_vistrita(data_dict, vistrita_fname)
 
     with open(vistrita_fname, "r", encoding="utf-8") as file:
         lines = file.readlines()
