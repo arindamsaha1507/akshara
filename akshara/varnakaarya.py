@@ -20,11 +20,11 @@ def maarjaka(sentence: str) -> str:
     return sentence
 
 
-def count_svaras(vinyaasa: list | str) -> int:
+def count_svaras(vinyaasa: list) -> int:
     """Counts the number of svaras
 
     Args:
-        vinyaasa (list | str): String or vinyaasa of a string
+        vinyaasa (list): Vinyaasa of a string
 
     Returns:
         int: Number of svaras
@@ -33,11 +33,11 @@ def count_svaras(vinyaasa: list | str) -> int:
     return sum(1 for x in get_vinyaasa(vinyaasa) if x in vn.svara)
 
 
-def count_vyanjanas(vinyaasa: list | str) -> int:
+def count_vyanjanas(vinyaasa: list) -> int:
     """Counts the number of vyanjanas
 
     Args:
-        vinyaasa (list | str): String or vinyaasa of a string
+        vinyaasa (list | str): Vinyaasa of a string
 
     Returns:
         int: Number of vyanjanas
@@ -46,11 +46,11 @@ def count_vyanjanas(vinyaasa: list | str) -> int:
     return sum(1 for x in get_vinyaasa(vinyaasa) if x in vn.vyanjana)
 
 
-def count_vaakyas(vinyaasa: list | str) -> int:
+def count_vaakyas(vinyaasa: list) -> int:
     """Counts the number of vaakyas
 
     Args:
-        vinyaasa (list | str): String or vinyaasa of a string
+        vinyaasa (list): Vinyaasa of a string
 
     Returns:
         int: Number of vaakyas
