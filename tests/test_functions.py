@@ -1,30 +1,18 @@
 """Tests for functions"""
 
+import yaml
 import akshara.varnakaarya as vk
 
 
 def test_get_vinyaasa():
     """Test get_vinyaasa() function"""
 
-    assert vk.get_vinyaasa("अरिन्दमः") == [
-        "अ",
-        "र्",
-        "इ",
-        "न्",
-        "द्",
-        "अ",
-        "म्",
-        "अ",
-        "ः",
-    ]
-    assert vk.get_vinyaasa("संस्कृतम्") == [
-        "स्",
-        "अ",
-        "ं",
-        "स्",
-        "क्",
-        "ऋ",
-        "त्",
-        "अ",
-        "म्",
-    ]
+    fname = "tests/sample_texts.yml"
+
+    with open(fname, "r", encoding="utf-8") as file:
+        data_dict = yaml.safe_load(file)
+
+    data_dict = data_dict["vinyaasa"]
+
+    for key in data_dict.keys():
+        assert ",".join(vk.get_vinyaasa(key)) == data_dict[key]
