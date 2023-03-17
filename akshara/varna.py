@@ -34,6 +34,10 @@ class Varna:
         """Checks if varna is vyanjana"""
         return self.bheda == "व्यञ्जनम्"
 
+    def is_ayogavaaha(self) -> bool:
+        """Checks if varna is ayogavaaha"""
+        return self.bheda == "अयोगवाहः"
+
     def is_anunaasika(self) -> bool:
         """Checks if varna is anunaasika"""
         return self.anunaasika
@@ -74,6 +78,7 @@ class Varnamaalaa:
         ]
         self.vyanjana = [x.get_roopa() for x in self.varnamaalaa if x.is_vyanjana()]
         self.vyanjana_with_akaara = [x[0] for x in self.vyanjana]
+        self.ayogavaaha = [x.get_roopa() for x in self.varnamaalaa if x.is_ayogavaaha()]
 
         self.maaheshwara_sutra = data["maaheshwara_sutra"]
         self.maatraa = data["maatraa"]
