@@ -179,6 +179,8 @@ def get_shabda(vinyaasa: list) -> str:
                 symbol = varna
         elif varna == "अ":
             symbol = ""
+        elif varna == "अँ":
+            symbol = "ँ"
         elif varna in vn.svara:
             symbol = vn.svara_to_maatraa[varna]
         elif varna in vn.anunaasika_svara:
