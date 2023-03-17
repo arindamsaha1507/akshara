@@ -125,7 +125,14 @@ def get_vinyaasa(shabda: str) -> list:
         if element in vn.svara:
             vinyaasa.append(element)
         elif element in vn.vyanjana_with_akaara:
-            vinyaasa.append(element + "्")
+            if (
+                len(shabda) > index + 2
+                and shabda[index + 1] == "्"
+                and shabda[index + 2] == "ँ"
+            ):
+                vinyaasa.append(element + "्" + "ँ")
+            else:
+                vinyaasa.append(element + "्")
             vinyaasa = add_akaara(shabda, index, vinyaasa)
         elif element in vn.maatraa:
             if index + 1 < len(shabda):
