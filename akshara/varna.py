@@ -44,9 +44,12 @@ class Varnamaalaa:
 
     def __init__(
         self,
-        varna_file_path="akshara/resources/latest.csv",
-        vividha_file_path="akshara/resources/vividha.yml",
+        varna_file_path="resources/latest.csv",
+        vividha_file_path="resources/vividha.yml",
     ) -> None:
+        path = f"{str(os.path.dirname(__file__))}"
+        varna_file_path = f"{path}/{varna_file_path}"
+        vividha_file_path = f"{path}/{vividha_file_path}"
         with open(varna_file_path, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
@@ -207,6 +210,4 @@ def read_table(filename="latest.csv", directory="resources") -> list:
     return list(lines)
 
 
-varnasangraha = Varnamaalaa(
-    "akshara/resources/latest.csv", "akshara/resources/vividha.yml"
-)
+varnasangraha = Varnamaalaa()
