@@ -5,6 +5,26 @@ import sys
 from akshara.varna import varnasangraha as vn
 
 
+def check_vinyaasa(vinyaasa: list) -> None:
+    """Checks is a vinyaasaa contains illegal characters
+
+    Args:
+        vinyaasa (list): Vinyaasa to be analysed
+    """
+
+    for symbol in vinyaasa:
+        print(symbol)
+        assert (
+            symbol
+            in vn.all_svaras
+            + vn.all_vyanjanas
+            + vn.avasaana
+            + vn.sankhyaa
+            + vn.ayogavaaha
+            + ["ऽ", "\n"]
+        )
+
+
 def maarjaka(sentence: str) -> str:
     """Cleans up a string
 
@@ -146,6 +166,8 @@ def get_vinyaasa(shabda: str) -> list:
             pass
         else:
             vinyaasa.append(element)
+
+    check_vinyaasa(vinyaasa)
 
     return vinyaasa
 
