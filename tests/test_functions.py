@@ -18,6 +18,7 @@ def test_get_vinyaasa():
     for key in data_dict.keys():
         assert ",".join(vk.get_vinyaasa(key)) == data_dict[key]
 
+
 def test_get_shabda():
     """Test get_vinyaasa() function"""
 
