@@ -16,7 +16,7 @@ class Varna:
         self.aabhyantara = parts[3]
         self.baahya = parts[4]
         self.kaala = parts[5]
-        self.anunaasika = parts[6] == "अनुनासिकः"
+        self.anunaasika = parts[6] == "अनुनासिकः\n"
 
     def get_roopa(self) -> str:
         """Returns the letter (roopa)"""
@@ -62,18 +62,14 @@ class Varnamaalaa:
         self.svara = [
             x.get_roopa()
             for x in self.varnamaalaa
-            if x.is_svara() and not x.is_anunaasika() and x.kaala != "प्लुतः"
+            if x.is_svara() and x.anunaasika is False and x.kaala != "प्लुतः"
         ]
         self.anunaasika_svara = [
             x.get_roopa()
             for x in self.varnamaalaa
-            if x.is_svara() and x.is_anunaasika() and x.kaala != "प्लुतः"
+            if x.is_svara() and x.anunaasika is True and x.kaala != "प्लुतः"
         ]
-        self.vyanjana = [
-            x.get_roopa()
-            for x in self.varnamaalaa
-            if x.is_vyanjana() and not x.is_anunaasika()
-        ]
+        self.vyanjana = [x.get_roopa() for x in self.varnamaalaa if x.is_vyanjana()]
         self.vyanjana_with_akaara = [x[0] for x in self.vyanjana]
 
         self.maaheshwara_sutra = data["maaheshwara_sutra"]
