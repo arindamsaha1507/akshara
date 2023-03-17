@@ -42,7 +42,11 @@ class Varna:
 class Varnamaalaa:
     """Class describing the varnamaalaa"""
 
-    def __init__(self, varna_file_path: str, vividha_file_path: str) -> None:
+    def __init__(
+        self,
+        varna_file_path="akshara/resources/latest.csv",
+        vividha_file_path="akshara/resources/vividha.yml",
+    ) -> None:
         with open(varna_file_path, "r", encoding="utf-8") as file:
             lines = file.readlines()
 
@@ -50,9 +54,35 @@ class Varnamaalaa:
             data = yaml.safe_load(file)
 
         self.varnamaalaa = list(Varna(line) for line in lines)
+        self.varnas = [x.get_roopa() for x in self.varnamaalaa]
+        self.all_svaras = [x.get_roopa() for x in self.varnamaalaa if x.is_svara()]
+        self.all_vyanjanas = [
+            x.get_roopa() for x in self.varnamaalaa if x.is_vyanjana()
+        ]
+        self.svara = [
+            x.get_roopa()
+            for x in self.varnamaalaa
+            if x.is_svara() and not x.is_anunaasika() and x.kaala != "प्लुतः"
+        ]
+        self.anunaasika_svara = [
+            x.get_roopa()
+            for x in self.varnamaalaa
+            if x.is_svara() and x.is_anunaasika() and x.kaala != "प्लुतः"
+        ]
+        self.vyanjana = [
+            x.get_roopa()
+            for x in self.varnamaalaa
+            if x.is_vyanjana() and not x.is_anunaasika()
+        ]
+        self.vyanjana_with_akaara = [x[0] for x in self.vyanjana]
+
         self.maaheshwara_sutra = data["maaheshwara_sutra"]
         self.maatraa = data["maatraa"]
-        self.varnas = [x.get_roopa() for x in self.varnamaalaa]
+        self.sankhyaa = data["sankhyaa"]
+        self.avasaana = [" ", "।", "॥", "-"]
+
+        self.maatraa_to_svara = dict(zip(self.maatraa, self.svara[1:]))
+        self.svara_to_maatraa = dict(zip(self.svara[1:], self.maatraa))
 
     def get_savarna(self, varna: str) -> list:
         """Returns savarnas of a varna
@@ -181,80 +211,6 @@ def read_table(filename="latest.csv", directory="resources") -> list:
     return list(lines)
 
 
-def read_symbols(filename="vividha.yml", directory="resources") -> dict:
-    """Read symbols file
-
-    Args:
-        filename (str, optional): Symbols filename. Defaults to 'vividha.yml'.
-        directory (str, optional): Resource directory. Defaults to 'resources'.
-
-    Returns:
-        dict: Dict of yaml file read
-    """
-
-    path = f"{str(os.path.dirname(__file__))}/{directory}/{filename}"
-    with open(path, "r", encoding="utf-8") as symbol_file:
-        symbols = yaml.safe_load(symbol_file)
-
-        return symbols
-
-
-def get_svara(raw_lines: list) -> list:
-    """Returns list of svaras
-
-    Args:
-        raw_lines (list): List of lines read from the resources
-
-    Returns:
-        list: List of svaras
-    """
-
-    return list(x.split(",")[0] for x in raw_lines if x.split(",")[1] == "स्वरः")
-
-
-def get_vyanjana(raw_lines: list) -> list:
-    """Returns list of vyanjanas
-
-    Args:
-        raw_lines (list): List of lines read from the resources
-
-    Returns:
-        list: List of vyanjanas
-    """
-
-    return list(x.split(",")[0] for x in raw_lines if x.split(",")[1] == "व्यञ्जनम्")
-
-
-resource_lines = read_table()
-all_svara = get_svara(resource_lines)
-vyanjana = get_vyanjana(resource_lines)
-vyanjana_with_akaara = list(x[0] for x in vyanjana)
-avasaana = [" ", "।", "॥", "-"]
-anunaasika_svara = list(x for x in all_svara if "ँ" in x)
-niranunaasika_svara = list(x for x in all_svara if "ँ" not in x)
-svara = list(x for x in niranunaasika_svara if "३" not in x)
-
-other_symbols = read_symbols()
-
-maatraa = other_symbols["maatraa"]
-
-maatraa_to_svara = dict(zip(maatraa, svara[1:]))
-svara_to_maatraa = dict(zip(svara[1:], maatraa))
-
-sankhyaa = other_symbols["sankhyaa"]
-
-maaheshwara_sutra = other_symbols["maaheshwara_sutra"]
-
-V = Varnamaalaa("akshara/resources/latest.csv", "akshara/resources/vividha.yml")
-
-print(V.get_savarna("अ"))
-print(V.get_savarna("त्"))
-print(V.get_savarna("र्"))
-print(V.get_savarna("ऋ"))
-print(V.maaheshwara_sutra)
-print(V.get_varna("क्").get_roopa())
-print(V.expand("चु"))
-print(V.expand("आत्"))
-print(V.expand("आ"))
-print(V.expand("हल्"))
-print(V.expand("अल्"))
+varnasangraha = Varnamaalaa(
+    "akshara/resources/latest.csv", "akshara/resources/vividha.yml"
+)

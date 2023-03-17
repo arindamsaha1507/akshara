@@ -2,7 +2,7 @@
 
 import sys
 
-import akshara.varna as vn
+from akshara.varna import varnasangraha as vn
 
 
 def maarjaka(sentence: str) -> str:
@@ -207,40 +207,3 @@ def get_sankhyaa(roman: str) -> str:
             devanaagari += vn.sankhyaa[int(digit)]
 
     return devanaagari
-
-
-def expand_pratyahaara(pratyaahaara: str) -> list:
-    """Expands a pratyaahaara
-
-    Args:
-        pratyaahaara (str): Pratyaahaara to be expanded
-
-    Returns:
-        list: List to varnas in expansion of the pratyaahaara
-    """
-
-    assert len(pratyaahaara) == 3
-    assert pratyaahaara[2] == "्"
-
-    start = pratyaahaara[0]
-    stop = pratyaahaara[1] + pratyaahaara[2]
-
-    i = vn.maaheshwara_sutra.index(start)
-    j = vn.maaheshwara_sutra.index(stop)
-
-    section = vn.maaheshwara_sutra[i:j]
-
-    it_letter = [x for x in section if x in vn.vyanjana]
-    for letter in it_letter:
-        section.remove(letter)
-
-    section = [x + "्" if x in vn.vyanjana_with_akaara else x for x in section]
-
-    if "अ" in section:
-        section.append("आ")
-    if "इ" in section:
-        section.append("ई")
-    if "उ" in section:
-        section.append("ऊ")
-
-    return list(set(section))
