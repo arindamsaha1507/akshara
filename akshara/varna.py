@@ -100,7 +100,7 @@ class Varnamaalaa:
 
         ref = list(x for x in self.varnamaalaa if x.get_roopa() == varna)
 
-        assert len(ref) == 1
+        assert len(ref) == 1, f"Expected 1 and only 1 varna to find savarnas. Got {ref}"
 
         ref = ref[0]
 
@@ -137,7 +137,9 @@ class Varnamaalaa:
         """
         varna = list(x for x in self.varnamaalaa if x.get_roopa() == string)
 
-        assert len(varna) == 1
+        assert (
+            len(varna) == 1
+        ), f"Expected 1 and only 1 varna to varna properties. Got {varna}"
 
         return varna[0]
 
@@ -151,7 +153,7 @@ class Varnamaalaa:
             list: List of varna
         """
 
-        assert len(code) <= 3
+        assert len(code) <= 3, f"Varnasanketa {code} is too long"
 
         if (
             len(code) == 2

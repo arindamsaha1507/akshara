@@ -23,7 +23,7 @@ def check_vinyaasa(vinyaasa: list) -> None:
             + vn.sankhyaa
             + vn.ayogavaaha
             + ["ऽ", "\n"]
-        )
+        ), f"Illegal varna {symbol} found in vinyaasaa {vinyaasa}"
 
 
 def maarjaka(sentence: str) -> str:
@@ -141,7 +141,9 @@ def combine_pluta(vinyaasa: list) -> list:
 
     while "३" in vinyaasa:
         index = vinyaasa.index("३")
-        assert vinyaasa[index - 1] in vn.svara + vn.anunaasika_svara
+        assert (
+            vinyaasa[index - 1] in vn.svara + vn.anunaasika_svara
+        ), f"Only svaras can be pluta. Got {vinyaasa}"
         vinyaasa[index - 1] += "३"
         del vinyaasa[index]
 
