@@ -67,6 +67,31 @@ def count_vyanjanas(vinyaasa: list) -> int:
     return sum(1 for x in get_vinyaasa(vinyaasa) if x in vn.vyanjana)
 
 
+def count_ayogavaahas(vinyaasa: list) -> int:
+    """Counts the number of ayogavaahas
+
+    Args:
+        vinyaasa (list | str): Vinyaasa of a string
+
+    Returns:
+        int: Number of ayogavaahas
+    """
+
+    return sum(1 for x in get_vinyaasa(vinyaasa) if x in vn.ayogavaaha)
+
+def count_varnas(vinyaasa: list) -> int:
+    """Counts the number of varnas
+
+    Args:
+        vinyaasa (list | str): Vinyaasa of a string
+
+    Returns:
+        int: Number of varnas
+    """
+
+    return count_svaras(vinyaasa) + count_vyanjanas(vinyaasa) + count_ayogavaahas(vinyaasa)
+
+
 def count_vaakyas(vinyaasa: list) -> int:
     """Counts the number of vaakyas
 
