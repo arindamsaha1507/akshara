@@ -179,8 +179,6 @@ class Varnamaalaa:
             for letter in it_letter:
                 section.remove(letter)
 
-            print(section)
-
             section = [x if x in self.varnas else x + "्" for x in section]
 
             extension = [
@@ -213,6 +211,3 @@ def read_table(filename="latest.csv", directory="resources") -> list:
         lines = file.readlines()
 
     return list(lines)
-
-
-varnasangraha = Varnamaalaa()

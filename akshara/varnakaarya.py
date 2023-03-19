@@ -2,7 +2,9 @@
 
 import sys
 
-from akshara.varna import varnasangraha as vn
+from akshara.varna import Varnamaalaa
+
+vn = Varnamaalaa()
 
 
 def check_vinyaasa(vinyaasa: list) -> None:
@@ -13,7 +15,6 @@ def check_vinyaasa(vinyaasa: list) -> None:
     """
 
     for symbol in vinyaasa:
-        print(symbol)
         assert (
             symbol
             in vn.all_svaras
@@ -116,7 +117,7 @@ def add_akaara(shabda: str, index: int, vinyaasa: list) -> list:
         if (
             shabda[index + 1] in vn.vyanjana_with_akaara
             or shabda[index + 1] in vn.avasaana
-            or shabda[index + 1] in ["ः", "ं"]
+            or shabda[index + 1] in ["ः", "ं", "३"]
         ):
             vinyaasa.append("अ")
 
@@ -124,6 +125,48 @@ def add_akaara(shabda: str, index: int, vinyaasa: list) -> list:
             vinyaasa.append("अँ")
     else:
         vinyaasa.append("अ")
+
+    return vinyaasa
+
+
+def combine_pluta(vinyaasa: list) -> list:
+    """Combines all pluta markings with their svaras
+
+    Args:
+        vinyaasa (list): Vinyaasa in consideration
+
+    Returns:
+        list: Modified vinyaasa
+    """
+
+    while "३" in vinyaasa:
+        index = vinyaasa.index("३")
+        assert vinyaasa[index - 1] in vn.svara + vn.anunaasika_svara
+        vinyaasa[index - 1] += "३"
+        del vinyaasa[index]
+
+    return vinyaasa
+
+
+def split_pluta(vinyaasa: list) -> list:
+    """Splits all pluta markings
+
+    Args:
+        vinyaasa (list): Vinyaasa in consideration
+
+    Returns:
+        list: Modified vinyaasa
+    """
+
+    index = 0
+
+    while index < len(vinyaasa):
+        if "३" not in vinyaasa[index]:
+            index += 1
+        else:
+            vinyaasa[index] = vinyaasa[index][:-1]
+            vinyaasa.insert(index + 1, "३")
+            index += 2
 
     return vinyaasa
 
@@ -169,6 +212,8 @@ def get_vinyaasa(shabda: str) -> list:
 
     check_vinyaasa(vinyaasa)
 
+    vinyaasa = combine_pluta(vinyaasa)
+
     return vinyaasa
 
 
@@ -181,6 +226,8 @@ def get_shabda(vinyaasa: list) -> str:
     Returns:
         str: Reconstructed string
     """
+
+    vinyaasa = split_pluta(vinyaasa)
 
     shabda = ""
 
