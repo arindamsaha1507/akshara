@@ -22,7 +22,7 @@ def check_vinyaasa(vinyaasa: list) -> None:
             + vn.avasaana
             + vn.sankhyaa
             + vn.ayogavaaha
-            + ["ऽ", "\n"]
+            + ["ऽ", "\n", "(", ")", "{", "}", "[", "]"]
         ), f"Illegal varna {symbol} found in vinyaasaa {vinyaasa}"
 
 
@@ -142,7 +142,7 @@ def add_akaara(shabda: str, index: int, vinyaasa: list) -> list:
         if (
             shabda[index + 1] in vn.vyanjana_with_akaara
             or shabda[index + 1] in vn.avasaana
-            or shabda[index + 1] in ["ः", "ं", "३"]
+            or shabda[index + 1] in ["ः", "ं", "३", "(", ")", "{", "}", "[", "]"]
         ):
             vinyaasa.append("अ")
 
@@ -166,11 +166,13 @@ def combine_pluta(vinyaasa: list) -> list:
 
     while "३" in vinyaasa:
         index = vinyaasa.index("३")
-        assert (
-            vinyaasa[index - 1] in vn.svara + vn.anunaasika_svara
-        ), f"Only svaras can be pluta. Got {vinyaasa}"
-        vinyaasa[index - 1] += "३"
-        del vinyaasa[index]
+        if vinyaasa[index - 1] in vn.svara + vn.anunaasika_svara:
+            vinyaasa[index - 1] += "३"
+            del vinyaasa[index]
+        else:
+            vinyaasa[index] = "a"
+
+    vinyaasa = ["३" if x == "a" else x for x in vinyaasa]
 
     return vinyaasa
 
@@ -262,7 +264,7 @@ def get_shabda(vinyaasa: list) -> str:
         if index == 0 and varna in vn.svara:
             symbol = varna
         elif varna in vn.svara and (
-            vinyaasa[index - 1] in vn.svara or vinyaasa[index - 1] == " "
+            vinyaasa[index - 1] in vn.svara or vinyaasa[index - 1] in [" ", "।", "॥", "(", ")", "{", "}", "[", "]"]
         ):
             symbol = varna
         elif varna in vn.vyanjana and index + 1 < len(vinyaasa):
@@ -277,7 +279,7 @@ def get_shabda(vinyaasa: list) -> str:
             symbol = ""
         elif varna == "अँ":
             symbol = "ँ"
-        elif varna in vn.svara:
+        elif varna in vn.svara and vinyaasa[index - 1] in vn.vyanjana:
             symbol = vn.svara_to_maatraa[varna]
         elif varna in vn.anunaasika_svara:
             symbol = vn.svara_to_maatraa[varna[0]] + "ँ"
