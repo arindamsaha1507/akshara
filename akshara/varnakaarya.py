@@ -79,6 +79,7 @@ def count_ayogavaahas(vinyaasa: list) -> int:
 
     return sum(1 for x in get_vinyaasa(vinyaasa) if x in vn.ayogavaaha)
 
+
 def count_varnas(vinyaasa: list) -> int:
     """Counts the number of varnas
 
@@ -89,7 +90,9 @@ def count_varnas(vinyaasa: list) -> int:
         int: Number of varnas
     """
 
-    return count_svaras(vinyaasa) + count_vyanjanas(vinyaasa) + count_ayogavaahas(vinyaasa)
+    return (
+        count_svaras(vinyaasa) + count_vyanjanas(vinyaasa) + count_ayogavaahas(vinyaasa)
+    )
 
 
 def count_vaakyas(vinyaasa: list) -> int:
@@ -264,7 +267,8 @@ def get_shabda(vinyaasa: list) -> str:
         if index == 0 and varna in vn.svara:
             symbol = varna
         elif varna in vn.svara and (
-            vinyaasa[index - 1] in vn.svara or vinyaasa[index - 1] in [" ", "।", "॥", "(", ")", "{", "}", "[", "]"]
+            vinyaasa[index - 1] in vn.svara
+            or vinyaasa[index - 1] in [" ", "।", "॥", "(", ")", "{", "}", "[", "]"]
         ):
             symbol = varna
         elif varna in vn.vyanjana and index + 1 < len(vinyaasa):
