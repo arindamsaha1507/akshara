@@ -6,13 +6,20 @@ from akshara import varnakaarya as vk
 
 app = FastAPI()
 
+
 @app.get("/vinyaasa/{word}")
 async def api_vinyaasa(word: str):
     """Return the vinyaasa of a word."""
 
-    vinyaasa = vk.get_vinyaasa(word)
+    try:
+        vinyaasa = vk.get_vinyaasa(word)
+        status = "success"
+    except AssertionError:
+        vinyaasa = None
+        status = "failure"
 
-    return {"vinyaasa": vinyaasa}
+    return {"vinyaasa": vinyaasa, "status": status}
+
 
 @app.get("/shabda/{letters}")
 async def api_shabda(letters: str):
@@ -20,6 +27,11 @@ async def api_shabda(letters: str):
 
     letters = letters.split(",")
 
-    shabda = vk.get_shabda(letters)
+    try:
+        shabda = vk.get_shabda(letters)
+        status = "success"
+    except AssertionError:
+        shabda = None
+        status = "failure"
 
-    return {"word": shabda}
+    return {"word": shabda, "status": status}
