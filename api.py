@@ -7,7 +7,7 @@ from akshara import varnakaarya as vk
 app = FastAPI()
 
 @app.get("/vinyaasa/{word}")
-async def vinyaasa(word: str):
+async def api_vinyaasa(word: str):
     """Return the vinyaasa of a word."""
 
     vinyaasa = vk.get_vinyaasa(word)
@@ -15,7 +15,7 @@ async def vinyaasa(word: str):
     return {"vinyaasa": vinyaasa}
 
 @app.get("/shabda/{letters}")
-async def shabda(letters: str):
+async def api_shabda(letters: str):
     """Return the shabda of a list of letters."""
 
     letters = letters.split(",")
