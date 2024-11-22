@@ -43,6 +43,7 @@ c = vk.get_vinyaasa("स पठति ।")  # c = ['स्', 'अ', ' ', 'प�
 ```python
 a = vk.get_akshara("राम")       # a = ['रा', 'म']
 b = vk.get_akshara("गमॢँ")       # b = ['ग', 'मॢँ']
+c = vk.get_akshara("पठति")      # c = ['प', 'ठ', 'ति']
 ```
 
 ## Create a word (shabda) from a given vinyaasa
