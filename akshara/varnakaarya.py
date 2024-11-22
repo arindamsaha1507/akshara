@@ -330,7 +330,9 @@ def get_akshara(vinyaasa: list) -> list:
         list: Syllables of the string
     """
 
-    index_svara = [i for i, x in enumerate(vinyaasa) if x in vn.svara]
+    index_svara = [
+        i for i, x in enumerate(vinyaasa) if x in vn.svara or x in vn.anunaasika_svara
+    ]
 
     akshara = []
     start = 0
@@ -338,7 +340,14 @@ def get_akshara(vinyaasa: list) -> list:
         akshara.append(get_shabda(vinyaasa[start : i + 1]))
         start = i + 1
 
+    print(index_svara)
+
     if index_svara and index_svara[-1] != len(vinyaasa) - 1:
-        akshara[-1] = get_shabda(vinyaasa[index_svara[-2] + 1 :])
+
+        if len(akshara) == 1:
+            akshara = [get_shabda(vinyaasa)]
+
+        else:
+            akshara[-1] = get_shabda(vinyaasa[index_svara[-2] + 1 :])
 
     return akshara
