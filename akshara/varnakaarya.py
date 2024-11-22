@@ -318,3 +318,27 @@ def get_sankhyaa(roman: str) -> str:
             devanaagari += vn.sankhyaa[int(digit)]
 
     return devanaagari
+
+
+def get_akshara(vinyaasa: list) -> list:
+    """Returns the akshara (syllable) of a string
+
+    Args:
+        vinyaasa (list): Vinyaasa of the string
+
+    Returns:
+        list: Syllables of the string
+    """
+
+    index_svara = [i for i, x in enumerate(vinyaasa) if x in vn.svara]
+
+    akshara = []
+    start = 0
+    for i in index_svara:
+        akshara.append(get_shabda(vinyaasa[start : i + 1]))
+        start = i + 1
+
+    if index_svara and index_svara[-1] != len(vinyaasa) - 1:
+        akshara[-1] = get_shabda(vinyaasa[index_svara[-2] + 1 :])
+
+    return akshara

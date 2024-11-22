@@ -2,7 +2,6 @@
 
 from fastapi import FastAPI, Query
 from akshara import varnakaarya as vk
-from akshara.varna import Varnamaalaa
 
 app = FastAPI()
 
@@ -34,17 +33,7 @@ async def api_akshara(
     except AssertionError:
         return {"akshara": None, "status": "failure"}
 
-    vn = Varnamaalaa()
-    index_svara = [i for i, x in enumerate(varnas) if x in vn.svara]
-
-    akshara = []
-    start = 0
-    for i in index_svara:
-        akshara.append(vk.get_shabda(varnas[start : i + 1]))
-        start = i + 1
-
-    if index_svara and index_svara[-1] != len(varnas) - 1:
-        akshara[-1] = vk.get_shabda(varnas[index_svara[-2] + 1 :])
+    akshara = vk.get_akshara(varnas)
 
     return {"akshara": akshara, "status": status}
 
