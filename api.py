@@ -28,12 +28,10 @@ async def api_akshara(
     """Return the akshara of a word."""
 
     try:
-        varnas = vk.get_vinyaasa(word)
+        akshara = vk.get_akshara(word)
         status = "success"
     except AssertionError:
         return {"akshara": None, "status": "failure"}
-
-    akshara = vk.get_akshara(varnas)
 
     return {"akshara": akshara, "status": status}
 

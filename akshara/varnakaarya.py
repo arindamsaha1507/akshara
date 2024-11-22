@@ -320,15 +320,17 @@ def get_sankhyaa(roman: str) -> str:
     return devanaagari
 
 
-def get_akshara(vinyaasa: list) -> list:
+def get_akshara(word: str) -> list:
     """Returns the akshara (syllable) of a string
 
     Args:
-        vinyaasa (list): Vinyaasa of the string
+        word (str): String to be syllabified
 
     Returns:
         list: Syllables of the string
     """
+
+    vinyaasa = get_vinyaasa(word)
 
     index_svara = [
         i for i, x in enumerate(vinyaasa) if x in vn.svara or x in vn.anunaasika_svara
