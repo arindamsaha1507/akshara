@@ -7,7 +7,6 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/arindamsaha1507/akshara)
 ![GitHub last commit](https://img.shields.io/github/last-commit/arindamsaha1507/akshara)
 
-
 Akshara is a tool for all your spelling needs. The package offers functions to:
 
 1. Spell any given word (or any string) in Devanagari script.
@@ -37,6 +36,13 @@ import akshara.varnakaarya as vk
 a = vk.get_vinyaasa("राम")       # a = ['र्', 'आ', 'म्', 'अ']
 b = vk.get_vinyaasa("गमॢँ")       # b = ['ग्', 'अ', 'म्', 'ऌँ']
 c = vk.get_vinyaasa("स पठति ।")  # c = ['स्', 'अ', ' ', 'प्', 'अ', 'ठ्', 'अ', 'त्', 'इ', ' ', '।']
+```
+
+## Obtain syllables (akshara) of a word
+
+```python
+a = vk.get_akshara("राम")       # a = ['रा', 'म']
+b = vk.get_akshara("गमॢँ")       # b = ['ग', 'मॢँ']
 ```
 
 ## Create a word (shabda) from a given vinyaasa

@@ -1,1 +1,4 @@
-include akshara/resources/*
+include README.md
+include LICENSE
+recursive-include akshara/resources *
+recursive-include akshara/sutra *
