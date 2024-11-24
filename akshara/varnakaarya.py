@@ -1,7 +1,5 @@
 """Handles all operations on varnas"""
 
-import sys
-
 from akshara.varna import Varnamaalaa
 
 vn = Varnamaalaa()
