@@ -312,8 +312,7 @@ def get_sankhyaa(roman: str) -> str:
         if digit == ".":
             devanaagari += digit
         elif int(digit) < 0 or int(digit) > 9:
-            print(f"{digit} is Not a digit")
-            sys.exit()
+            raise ValueError(f"Invalid digit {digit} in {roman}")
         else:
             devanaagari += vn.sankhyaa[int(digit)]
 
@@ -341,8 +340,6 @@ def get_akshara(word: str) -> list:
     for i in index_svara:
         akshara.append(get_shabda(vinyaasa[start : i + 1]))
         start = i + 1
-
-    print(index_svara)
 
     if index_svara and index_svara[-1] != len(vinyaasa) - 1:
 
