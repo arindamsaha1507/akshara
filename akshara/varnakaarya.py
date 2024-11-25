@@ -333,6 +333,12 @@ def get_akshara(word: str) -> list:
         i for i, x in enumerate(vinyaasa) if x in vn.svara or x in vn.anunaasika_svara
     ]
 
+    index_copy = index_svara.copy()
+
+    for ii, index in enumerate(index_copy):
+        if index + 1 < len(vinyaasa) and vinyaasa[index + 1] == "ं":
+            index_svara[ii] = index + 1
+
     akshara = []
     start = 0
     for i in index_svara:
