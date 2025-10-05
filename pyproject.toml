@@ -22,7 +22,7 @@ dependencies = [
     "fastapi>=0.109.0",
     "uvicorn>=0.25.0",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [project.urls]
 Homepage = "https://github.com/arindamsaha1507/akshara"

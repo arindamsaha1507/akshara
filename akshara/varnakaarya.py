@@ -201,7 +201,7 @@ def split_pluta(vinyaasa: list) -> list:
     return vinyaasa
 
 
-def get_vinyaasa(shabda: str) -> list:
+def get_vinyaasa(shabda: str) -> list[str]:
     """Returns the vinyaasa (spelling) of a string
 
     Args:
