@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "akshara"
+version = "1.1.3"
+description = "A project to help spelling in Sanskrit (Devanaagari)"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Arindam Saha", email = "arindamsaha1507@gmail.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License (GPL)",
+    "Operating System :: OS Independent",
+    "Topic :: Text Processing :: Linguistic",
+]
+dependencies = [
+    "PyYAML>=6.0.2",
+    "fastapi>=0.109.0",
+    "uvicorn>=0.25.0",
+]
+requires-python = ">=3.8"
+
+[project.urls]
+Homepage = "https://github.com/arindamsaha1507/akshara"
+Repository = "https://github.com/arindamsaha1507/akshara"
+
+[tool.hatch.build.targets.wheel]
+packages = ["akshara"]
+
+[tool.hatch.build.targets.wheel.sources]
+"akshara" = "akshara"
+
+[dependency-groups]
+dev = [
+    "black>=24.8.0",
+    "pylint>=3.2.7",
+    "pytest>=8.3.5",
+]
+
+[tool.hatch.build]
+include = [
+    "akshara/**/*.py",
+    "akshara/resources/*",
+    "akshara/sutra/*",
+    "README.md",
+    "LICENSE",
+]
