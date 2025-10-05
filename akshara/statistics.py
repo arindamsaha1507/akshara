@@ -1,6 +1,6 @@
 """A module for statistical analysis of text data"""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from akshara.varnakaarya import get_vinyaasa
 from akshara.varna import Varnamaalaa
@@ -72,6 +72,8 @@ class TextStatistics:
 
 
 def main():
+    """Main function to demonstrate the usage of TextStatistics class"""
+
     sample_text = "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।"
     stats = TextStatistics(sample_text)
     print("Text:", stats.text)
