@@ -1,4 +1,5 @@
 """Contructs a list of varnas with all properties"""
+
 import os
 
 import yaml
