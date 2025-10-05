@@ -71,7 +71,7 @@ class TextStatistics:
         return count
 
 
-if __name__ == "__main__":
+def main():
     sample_text = "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।"
     stats = TextStatistics(sample_text)
     print("Text:", stats.text)
@@ -79,3 +79,7 @@ if __name__ == "__main__":
     print("Character frequencies:", stats.all_character_frequency)
     print("Swara frequencies:", stats.swara_frequency)
     print("Vyanjana frequencies:", stats.vyanjana_frequency)
+
+
+if __name__ == "__main__":
+    main()
