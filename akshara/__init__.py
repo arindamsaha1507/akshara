@@ -1,3 +1,3 @@
 """Sample"""
 
-from akshara import varna, varnakaarya
+from akshara import varna, varnakaarya, statistics
